@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lộ Trình AI Engineer - 4 Năm & Tương Lai</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        .phase-button {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .phase-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .phase-button:hover::before {
+            left: 100%;
+        }
+        
+        .phase-button:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+        }
+        
+        .phase-button.active {
+            transform: scale(1.08);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.4);
+            border-width: 2px;
+        }
+        
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 1.2rem;
+            height: 1.2rem;
+            cursor: pointer;
+            border-radius: 0.25rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+        
+        .checkbox-wrapper input[type="checkbox"]:checked {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+            animation: checkBounce 0.4s;
+        }
+        
+        @keyframes checkBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .task-item {
+            transition: all 0.3s ease;
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .task-item:hover {
+            background: rgba(255,255,255,0.05);
+            transform: translateX(4px);
+        }
+        
+        .task-item.completed {
+            opacity: 0.6;
+        }
+        
+        .task-item.completed span {
+            text-decoration: line-through;
+        }
+        
+        .progress-ring {
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        
+        .card {
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        .skill-tag {
+            transition: all 0.3s;
+        }
+        
+        .skill-tag:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .section-card {
+            transition: all 0.3s;
+        }
+
+        .section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Hero Header -->
+        <div class="text-center mb-8 card">
+            <div class="glass rounded-2xl p-8 shadow-2xl">
+                <div class="text-6xl mb-4 animate-bounce">🚀</div>
+                <h1 class="text-5xl font-extrabold text-white mb-3 tracking-tight">
+                    Lộ Trình AI Engineer
+                </h1>
+                <p class="text-xl text-gray-200 mb-4">From Student to AI Expert</p>
+                <div class="flex items-center justify-center gap-3 text-white">
+                    <span class="badge bg-blue-500">2024-2032+</span>
+                    <span class="badge bg-green-500">6 Giai đoạn</span>
+                    <span class="badge bg-purple-500">Computer Vision</span>
+                </div>
+                
+                <!-- Overall Progress -->
+                <div class="mt-6 max-w-2xl mx-auto">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-white font-semibold">Tiến độ tổng thể</span>
+                        <span id="overall-progress-text" class="text-white font-bold text-xl">0%</span>
+                    </div>
+                    <div class="w-full bg-white/20 rounded-full h-4 overflow-hidden">
+                        <div id="overall-progress-bar" class="progress-bar h-full bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline Navigation -->
+        <div class="mb-8">
+            <div id="timeline-nav" class="flex flex-wrap gap-4 justify-center">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div id="content-area" class="card">
+            <!-- Will be populated by JavaScript -->
+        </div>
+
+        <!-- Key Principles -->
+        <div class="mt-8 glass rounded-2xl p-8 shadow-2xl card">
+            <h3 class="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                <span class="text-4xl">💡</span>
+                Nguyên Tắc Thành Công
+            </h3>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="glass rounded-xl p-5 section-card">
+                    <div class="text-3xl mb-3">🎯</div>
+                    <div class="font-bold text-cyan-300 mb-2 text-lg">Focus & Consistency</div>
+                    <p class="text-gray-200 text-sm">Học đều đặn mỗi ngày, không bỏ cuộc khi khó khăn. Marathon không phải sprint.</p>
+                </div>
+                <div class="glass rounded-xl p-5 section-card">
+                    <div class="text-3xl mb-3">💪</div>
+                    <div class="font-bold text-green-300 mb-2 text-lg">Practice > Theory</div>
+                    <p class="text-gray-200 text-sm">Code nhiều hơn đọc. Mỗi concept phải có project thực hành. Learning by doing.</p>
+                </div>
+                <div class="glass rounded-xl p-5 section-card">
+                    <div class="text-3xl mb-3">🤝</div>
+                    <div class="font-bold text-purple-300 mb-2 text-lg">Network & Share</div>
+                    <p class="text-gray-200 text-sm">Kết nối với community, chia sẻ kiến thức. Your network = your net worth.</p>
+                </div>
+                <div class="glass rounded-xl p-5 section-card">
+                    <div class="text-3xl mb-3">📸</div>
+                    <div class="font-bold text-yellow-300 mb-2 text-lg">Passion + AI</div>
+                    <p class="text-gray-200 text-sm">Kết hợp sở thích (nhiếp ảnh/điện ảnh) với AI. Unique advantage của em!</p>
+                </div>
+                <div class="glass rounded-xl p-5 section-card">
+                    <div class="text-3xl mb-3">🚀</div>
+                    <div class="font-bold text-pink-300 mb-2 text-lg">Ship Projects</div>
+                    <p class="text-gray-200 text-sm">Deploy và show projects. GitHub, portfolio website. Recruiters cần thấy results.</p>
+                </div>
+                <div class="glass rounded-xl p-5 section-card">
+                    <div class="text-3xl mb-3">📚</div>
+                    <div class="font-bold text-orange-300 mb-2 text-lg">Never Stop Learning</div>
+                    <p class="text-gray-200 text-sm">AI thay đổi nhanh. Đọc papers, follow trends, adapt. Lifelong learner mindset.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 text-center">
+            <p class="text-white/60 text-sm">💻 Made with ❤️ for AI Engineers | Data tự động lưu trong browser</p>
+        </div>
+    </div>
+
+    <script>
+        // Data
+        const roadmapPhases = [
+            {
+                phase: "Năm 1: Foundation",
+                period: "2024-2025",
+                icon: "🎓",
+                color: "from-blue-500 to-cyan-500",
+                goal: "Làm chủ lập trình & toán học cơ bản",
+                tasks: [
+                    { id: "y1-python", text: "Hoàn thành Python 6 tuần", category: "code" },
+                    { id: "y1-cpp", text: "Master C++ basics", category: "code" },
+                    { id: "y1-dsa", text: "Học Cấu trúc dữ liệu & Giải thuật", category: "study" },
+                    { id: "y1-leetcode", text: "Solve 35+ LeetCode problems", category: "practice" },
+                    { id: "y1-ml-course", text: "Hoàn thành ML course (Andrew Ng)", category: "study" },
+                    { id: "y1-project1", text: "Build Calculator app", category: "project" },
+                    { id: "y1-project2", text: "Build To-do app", category: "project" },
+                    { id: "y1-project3", text: "Build Simple ML model", category: "project" },
+                    { id: "y1-gpa", text: "Đạt GPA ≥3.2", category: "target" }
+                ]
+            },
+            {
+                phase: "Năm 2: Core Skills",
+                period: "2025-2026",
+                icon: "💻",
+                color: "from-green-500 to-emerald-500",
+                goal: "OOP, Database, Web & ML Fundamentals",
+                tasks: [
+                    { id: "y2-oop", text: "Master OOP (Lập trình hướng đối tượng)", category: "study" },
+                    { id: "y2-database", text: "Thành thạo SQL & Database design", category: "study" },
+                    { id: "y2-web", text: "Build full-stack web app", category: "project" },
+                    { id: "y2-dl", text: "Học Deep Learning basics (Neural Networks)", category: "study" },
+                    { id: "y2-mnist", text: "Build Image classifier (MNIST)", category: "project" },
+                    { id: "y2-kaggle", text: "Tham gia Kaggle competition đầu tiên", category: "practice" },
+                    { id: "y2-cv", text: "Học OpenCV & Computer Vision basics", category: "study" },
+                    { id: "y2-face", text: "Build Face detection app", category: "project" },
+                    { id: "y2-gpa", text: "Đạt GPA ≥3.4", category: "target" }
+                ]
+            },
+            {
+                phase: "Năm 3: AI Specialization",
+                period: "2026-2027",
+                icon: "🧠",
+                color: "from-purple-500 to-pink-500",
+                goal: "Chuyên sâu Computer Vision",
+                tasks: [
+                    { id: "y3-yolo", text: "Học Object Detection (YOLO, R-CNN)", category: "study" },
+                    { id: "y3-segmentation", text: "Image Segmentation projects", category: "project" },
+                    { id: "y3-gan", text: "Học GANs & Image generation", category: "study" },
+                    { id: "y3-style", text: "Build Photo style transfer app", category: "project" },
+                    { id: "y3-mlops", text: "Học MLOps (Docker, Kubernetes)", category: "study" },
+                    { id: "y3-cloud", text: "Deploy AI model to cloud (AWS/GCP)", category: "project" },
+                    { id: "y3-opensource", text: "Contribute to open source AI project", category: "practice" },
+                    { id: "y3-internship", text: "Full-time internship tại startup AI", category: "target" },
+                    { id: "y3-gpa", text: "Đạt GPA ≥3.5", category: "target" }
+                ]
+            },
+            {
+                phase: "Năm 4: Career Ready",
+                period: "2027-2028",
+                icon: "🚀",
+                color: "from-orange-500 to-red-500",
+                goal: "Sẵn sàng làm AI Engineer",
+                tasks: [
+                    { id: "y4-papers", text: "Đọc & implement 10+ research papers", category: "study" },
+                    { id: "y4-transformers", text: "Học Transformers, BERT, GPT", category: "study" },
+                    { id: "y4-chatbot", text: "Build AI chatbot hoặc recommendation system", category: "project" },
+                    { id: "y4-thesis", text: "Hoàn thành Khóa luận tốt nghiệp về AI/CV", category: "target" },
+                    { id: "y4-portfolio", text: "Portfolio với 10+ projects", category: "target" },
+                    { id: "y4-ielts", text: "IELTS 6.5-7.0", category: "target" },
+                    { id: "y4-github", text: "GitHub: 1000+ contributions", category: "practice" },
+                    { id: "y4-interview", text: "Pass interview & get job offer", category: "target" },
+                    { id: "y4-gpa", text: "Tốt nghiệp GPA ≥3.5", category: "target" }
+                ]
+            },
+            {
+                phase: "2028-2032: Career Growth",
+                period: "2028-2032",
+                icon: "🏆",
+                color: "from-yellow-500 to-amber-500",
+                goal: "Junior → Senior AI Engineer",
+                tasks: [
+                    { id: "cg-work2y", text: "2 năm kinh nghiệm at AI company", category: "target" },
+                    { id: "cg-projects", text: "Contribute to 5+ major projects", category: "practice" },
+                    { id: "cg-mentor", text: "Mentor junior engineers", category: "practice" },
+                    { id: "cg-conference", text: "Attend & speak at AI conferences", category: "practice" },
+                    { id: "cg-masters", text: "Consider Master's degree (part-time)", category: "study" },
+                    { id: "cg-lead", text: "Lead AI projects", category: "target" },
+                    { id: "cg-publish", text: "Publish papers/blog posts", category: "practice" },
+                    { id: "cg-senior", text: "Promote to Senior AI Engineer", category: "target" },
+                    { id: "cg-salary", text: "Salary: 3000-5000 USD/month", category: "target" }
+                ]
+            },
+            {
+                phase: "2032+: AI Expert",
+                period: "Beyond 2032",
+                icon: "🌟",
+                color: "from-indigo-500 to-purple-600",
+                goal: "Technical Leader / Researcher / Entrepreneur",
+                tasks: [
+                    { id: "ex-expert", text: "10+ years experience trong AI", category: "target" },
+                    { id: "ex-choice", text: "Chọn path: Leader/Researcher/Entrepreneur", category: "target" },
+                    { id: "ex-team", text: "Lead team 10+ engineers (nếu chọn Leader)", category: "practice" },
+                    { id: "ex-phd", text: "Hoàn thành PhD (nếu chọn Researcher)", category: "study" },
+                    { id: "ex-startup", text: "Found AI startup (nếu chọn Entrepreneur)", category: "practice" },
+                    { id: "ex-impact", text: "Impact: 1000s users/engineers", category: "target" },
+                    { id: "ex-brand", text: "Build personal brand & reputation", category: "practice" },
+                    { id: "ex-mentor", text: "Give back: Mentor, teach, share", category: "practice" }
+                ]
+            }
+        ];
+
+        let activePhase = 0;
+        let progress = {};
+
+        // Load progress from localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('ai-roadmap-progress');
+            if (saved) {
+                progress = JSON.parse(saved);
+            }
+        }
+
+        // Save progress to localStorage
+        function saveProgress() {
+            localStorage.setItem('ai-roadmap-progress', JSON.stringify(progress));
+            updateOverallProgress();
+        }
+
+        // Toggle task
+        function toggleTask(taskId) {
+            progress[taskId] = !progress[taskId];
+            saveProgress();
+            renderContent();
+        }
+
+        // Calculate overall progress
+        function updateOverallProgress() {
+            let total = 0;
+            let completed = 0;
+            roadmapPhases.forEach(phase => {
+                phase.tasks.forEach(task => {
+                    total++;
+                    if (progress[task.id]) completed++;
+                });
+            });
+            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+            document.getElementById('overall-progress-text').textContent = percentage + '%';
+            document.getElementById('overall-progress-bar').style.width = percentage + '%';
+        }
+
+        // Calculate phase progress
+        function getPhaseProgress(phaseIdx) {
+            const phase = roadmapPhases[phaseIdx];
+            let total = phase.tasks.length;
+            let completed = phase.tasks.filter(t => progress[t.id]).length;
+            return total > 0 ? Math.round((completed / total) * 100) : 0;
+        }
+
+        // Category colors
+        const categoryColors = {
+            'code': 'bg-blue-500',
+            'study': 'bg-green-500',
+            'practice': 'bg-purple-500',
+            'project': 'bg-pink-500',
+            'target': 'bg-yellow-500'
+        };
+
+        const categoryIcons = {
+            'code': '💻',
+            'study': '📚',
+            'practice': '🎯',
+            'project': '🚀',
+            'target': '🏆'
+        };
+
+        // Render Timeline Navigation
+        function renderTimeline() {
+            const nav = document.getElementById('timeline-nav');
+            nav.innerHTML = roadmapPhases.map((phase, idx) => {
+                const phaseProgress = getPhaseProgress(idx);
+                return `
+                <button 
+                    onclick="setActivePhase(${idx})"
+                    class="phase-button glass rounded-xl px-5 py-4 ${activePhase === idx ? 'active border-white' : 'border-white/20'} hover:border-white/40">
+                    <div class="text-3xl mb-2">${phase.icon}</div>
+                    <div class="text-white font-bold text-sm mb-1">Năm ${idx + 1}</div>
+                    <div class="text-xs text-gray-300 mb-2">${phase.period.split('-')[0]}</div>
+                    <div class="w-full bg-white/20 rounded-full h-1.5 overflow-hidden">
+                        <div class="h-full bg-gradient-to-r ${phase.color} rounded-full" style="width: ${phaseProgress}%"></div>
+                    </div>
+                    <div class="text-xs text-white/80 mt-1">${phaseProgress}%</div>
+                </button>
+            `}).join('');
+        }
+
+        // Render Content
+        function renderContent() {
+            const phase = roadmapPhases[activePhase];
+            const phaseProgress = getPhaseProgress(activePhase);
+            const content = document.getElementById('content-area');
+            
+            let html = `
+                <div class="glass rounded-2xl p-8 shadow-2xl">
+                    <div class="bg-gradient-to-r ${phase.color} rounded-xl p-8 mb-8 section-card">
+                        <div class="flex items-start justify-between flex-wrap gap-4">
+                            <div class="flex-1">
+                                <h2 class="text-4xl font-extrabold text-white mb-3">${phase.phase}</h2>
+                                <p class="text-white/90 text-xl mb-3">${phase.period}</p>
+                                <div class="flex items-center gap-2 text-white text-lg">
+                                    <span>🎯</span>
+                                    <span class="font-semibold">${phase.goal}</span>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-7xl mb-2">${phase.icon}</div>
+                                <div class="text-white text-2xl font-bold">${phaseProgress}%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                            <span>✅</span> Checklist (${phase.tasks.filter(t => progress[t.id]).length}/${phase.tasks.length})
+                        </h3>
+                        
+                        <div class="space-y-2">
+            `;
+
+            phase.tasks.forEach(task => {
+                const isChecked = progress[task.id];
+                const categoryColor = categoryColors[task.category] || 'bg-gray-500';
+                const categoryIcon = categoryIcons[task.category] || '📌';
+                
+                html += `
+                    <div class="task-item glass rounded-lg p-4 ${isChecked ? 'completed' : ''} section-card">
+                        <div class="flex items-center gap-4">
+                            <div class="checkbox-wrapper">
+                                <input 
+                                    type="checkbox" 
+                                    id="${task.id}"
+                                    ${isChecked ? 'checked' : ''}
+                                    onchange="toggleTask('${task.id}')"
+                                    class="cursor-pointer"
+                                />
+                            </div>
+                            <label for="${task.id}" class="flex-1 flex items-center gap-3 cursor-pointer">
+                                <span class="text-xl">${categoryIcon}</span>
+                                <span class="text-white text-base font-medium">${task.text}</span>
+                            </label>
+                            <span class="${categoryColor} text-white text-xs px-3 py-1 rounded-full font-semibold uppercase">
+                                ${task.category}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            content.innerHTML = html;
+        }
+
+        function setActivePhase(idx) {
+            activePhase = idx;
+            renderTimeline();
+            renderContent();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize
+        loadProgress();
+        renderTimeline();
+        renderContent();
+        updateOverallProgress();
+    </script>
+</body>
+</html>
